@@ -200,7 +200,9 @@ Current time: ${today.time}`;
 
   runHermes(prompt) {
     return new Promise((resolve, reject) => {
-      const child = spawn(HERMES_BIN, ["chat", "-q", prompt], {
+      // Use -z (oneshot mode) for clean output: no reasoning block,
+      // no session_id line, no banner — just the final text response.
+      const child = spawn(HERMES_BIN, ["-z", prompt], {
         stdio: ["ignore", "pipe", "pipe"],
       });
 
