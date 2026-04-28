@@ -1,10 +1,10 @@
-# Obsidian AI Overview — Build Specification
+# Obsidian At a Glance — Build Specification
 
 ## Overview
 
-Build an Obsidian plugin + Hermes AI integration that automatically generates a 7-day "AI Overview" summary and writes it into each new daily note. The system has three parts:
+Build an Obsidian plugin + Hermes AI integration that automatically generates a 7-day "At a Glance" summary and writes it into each new daily note. The system has three parts:
 
-1. **Obsidian Plugin** (`obsidian-ai-overview`) — a local `.obsidian/plugins/` community-style plugin
+1. **Obsidian Plugin** (`obsidian-at-a-glance`) — a local `.obsidian/plugins/` community-style plugin
 2. **Hermes Prompt/Behavior** — instructions for how Hermes should generate the overview
 3. **Daily Note Template** — updated template with the `ai-overview` codeblock placeholder
 
@@ -33,9 +33,9 @@ Build an Obsidian plugin + Hermes AI integration that automatically generates a 
       |                                          |  Uses OpenRouter     |
       |                                          |  Connects to Honcho  |
       |◄──────────────────────────────────────── |  memory on :8000      |
-      |        (AI Overview markdown)            |                        |
+      |        (At a Glance markdown)            |                        |
       |                                          |                        |
-      |  PATCH AI Overview into daily note ────► |                        |
+      |  PATCH At a Glance into daily note ────► |                        |
       |  Target-Type: DAILY NOTE::[Date]::[Hdr]  |                        |
 ```
 
@@ -51,12 +51,12 @@ Build an Obsidian plugin + Hermes AI integration that automatically generates a 
 ## Part 1: Obsidian Plugin
 
 ### Location
-`/Users/Laura/Obsidian/Primary-Vault/.obsidian/plugins/obsidian-ai-overview/`
+`/Users/Laura/Obsidian/Primary-Vault/.obsidian/plugins/obsidian-at-a-glance/`
 
 ### Files to Create
 
 ```
-obsidian-ai-overview/
+obsidian-at-a-glance/
 ├── manifest.json
 ├── main.js
 ├── styles.css
@@ -67,11 +67,11 @@ obsidian-ai-overview/
 
 ```json
 {
-  "id": "obsidian-ai-overview",
-  "name": "AI Overview",
+  "id": "obsidian-at-a-glance",
+  "name": "At a Glance",
   "version": "0.1.0",
   "minAppVersion": "1.4.0",
-  "description": "Generate a 7-day AI Overview in daily notes via Hermes",
+  "description": "Generate a 7-day At a Glance in daily notes via Hermes",
   "author": "Laura",
   "authorUrl": "",
   "isDesktopOnly": true,
@@ -96,16 +96,16 @@ The plugin must:
       - Capture stdout incrementally (use `on('data')` streaming if possible)
       - Hermes outputs streaming text to stdout — collect it all until `close` event
    e. Parse the output — extract the markdown content (strip any non-markdown wrapper text)
-   f. Replace the codeblock content with the rendered AI Overview markdown
-   g. PATCH the AI Overview directly into the daily note via Local REST API:
+   f. Replace the codeblock content with the rendered At a Glance markdown
+   g. PATCH the At a Glance directly into the daily note via Local REST API:
       - `PATCH /vault/[today's note path]`
-      - Header: `Target-Type: DAILY NOTE::[Today's Date e.g. Monday, April 27, 2026]::AI Overview`
-      - Body: the AI Overview markdown
-      - Note: the PATCH appends/creates the `### AI Overview` section under the heading
+      - Header: `Target-Type: DAILY NOTE::[Today's Date e.g. Monday, April 27, 2026]::At a Glance`
+      - Body: the At a Glance markdown
+      - Note: the PATCH appends/creates the `### At a Glance` section under the heading
 
 3. **Error handling:**
-   - If Local REST API is unreachable, show a toast: "AI Overview: Local REST API not reachable"
-   - If Hermes subprocess fails, show toast: "AI Overview: Hermes error — see console"
+   - If Local REST API is unreachable, show a toast: "At a Glance: Local REST API not reachable"
+   - If Hermes subprocess fails, show toast: "At a Glance: Hermes error — see console"
    - Wrap the whole processor in try/catch
 
 ### API Integration Details
@@ -133,7 +133,7 @@ The plugin must:
 
 ### styles.css
 
-Minimal styling for the AI Overview section:
+Minimal styling for the At a Glance section:
 - Use a subtle background tint (e.g., `rgba(120, 120, 200, 0.05)`)
 - Add a left border accent (3px solid accent color)
 - Round corners (6px)
@@ -154,7 +154,7 @@ Brief install instructions: copy folder to `.obsidian/plugins/`, enable in Commu
 When called via `hermes chat -q '<prompt>'` with the 7-day context, Hermes must:
 
 1. **Read** all 7 days of note content passed in the prompt
-2. **Synthesize** an "AI Overview" section covering:
+2. **Synthesize** an "At a Glance" section covering:
    - **Tasks completed** (checked off tasks from each day)
    - **Active tasks** (uncompleted tasks, especially recurring/due ones)
    - **Journal highlights** (key entries from `### Journal` sections)
@@ -163,7 +163,7 @@ When called via `hermes chat -q '<prompt>'` with the 7-day context, Hermes must:
 3. **Output** ONLY the rendered markdown — no preamble like "Here's your overview:", no postamble, no JSON wrapper
 4. **Format:**
    ```markdown
-   ### AI Overview
+   ### At a Glance
 
    **Week of [start date] – [end date]**
 
@@ -196,10 +196,10 @@ hermes chat -q '<full-prompt>'
 
 Where `<full-prompt>` is:
 ```
-You are an AI Overview generator. Read the following 7 days of notes and produce a concise "AI Overview" section.
+You are an At a Glance generator. Read the following 7 days of notes and produce a concise "At a Glance" section.
 
 RULES:
-- Output ONLY markdown starting with "### AI Overview"
+- Output ONLY markdown starting with "### At a Glance"
 - No preamble, no explanation, no JSON, no quotes
 - Cover: tasks completed, active tasks, journal highlights, newly created notes, upcoming deadlines
 - Be concise — bullet points, not paragraphs
@@ -225,7 +225,7 @@ Today is: [dddd, MMMM D, YYYY]
 The daily note template — locate it in the vault (likely in `.obsidian/templates/` or similar). Add this block:
 
 ```markdown
-## AI Overview
+## At a Glance
 
 ```ai-overview
 *Generating overview...*
@@ -237,7 +237,7 @@ The daily note template — locate it in the vault (likely in `.obsidian/templat
 
 - The `ai-overview` codeblock processor replaces its own content — the placeholder text is just for UX
 - Alternatively, the block can be empty (the processor handles empty blocks gracefully)
-- The section header `## AI Overview` (not `###`) matches the hierarchy: `Daily Note > ## AI Overview > ai-overview block`
+- The section header `## At a Glance` (not `###`) matches the hierarchy: `Daily Note > ## At a Glance > ai-overview block`
 
 ---
 
@@ -268,18 +268,18 @@ The daily note template — locate it in the vault (likely in `.obsidian/templat
 2. When a daily note containing ` ```ai-overview ` is opened/rendered, the processor fires
 3. The processor reads the last 7 days of notes via the Local REST API
 4. Hermes is spawned with the correct prompt and produces valid markdown
-5. The AI Overview section appears under `## AI Overview` in the current daily note
+5. The At a Glance section appears under `## At a Glance` in the current daily note
 6. The codeblock placeholder text is replaced with the rendered overview
 7. If Local REST API is down, a user-friendly toast is shown
 8. If Hermes fails, a user-friendly toast is shown with a console error
-9. The `styles.css` gives the AI Overview a visually distinct but unobtrusive appearance
+9. The `styles.css` gives the At a Glance a visually distinct but unobtrusive appearance
 
 ---
 
 ## File Checklist
 
 ```
-obsidian-ai-overview/
+obsidian-at-a-glance/
 ├── manifest.json       ← plugin manifest
 ├── main.js             ← core plugin logic (codeblock processor + API calls + subprocess)
 ├── styles.css          ← visual styling for the overview section

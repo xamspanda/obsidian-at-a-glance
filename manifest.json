@@ -1,9 +1,9 @@
 {
-  "id": "obsidian-ai-overview",
-  "name": "AI Overview",
+  "id": "obsidian-at-a-glance",
+  "name": "At a Glance",
   "version": "0.1.0",
   "minAppVersion": "1.4.0",
-  "description": "Generate a 7-day AI Overview in daily notes via Hermes",
+  "description": "Generate a 7-day At a Glance summary in daily notes via Hermes",
   "author": "Laura",
   "authorUrl": "",
   "isDesktopOnly": true,

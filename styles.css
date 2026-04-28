@@ -1,4 +1,4 @@
-.ai-overview {
+.at-a-glance {
   background: rgba(120, 120, 200, 0.05);
   border-left: 3px solid var(--interactive-accent);
   border-radius: 6px;
@@ -6,31 +6,31 @@
   margin: 0.75rem 0;
 }
 
-.ai-overview h3:first-child {
+.at-a-glance h3:first-child {
   margin-top: 0;
 }
 
-.ai-overview p:last-child,
-.ai-overview ul:last-child,
-.ai-overview ol:last-child {
+.at-a-glance p:last-child,
+.at-a-glance ul:last-child,
+.at-a-glance ol:last-child {
   margin-bottom: 0;
 }
 
-.ai-overview code,
-.ai-overview .metadata {
+.at-a-glance code,
+.at-a-glance .metadata {
   font-family: var(--font-monospace);
 }
 
-.ai-overview em:last-child {
+.at-a-glance em:last-child {
   color: var(--text-muted);
   font-style: italic;
 }
 
-.ai-overview-loading,
-.ai-overview-error {
+.at-a-glance-loading,
+.at-a-glance-error {
   color: var(--text-muted);
 }
 
-.ai-overview-error {
+.at-a-glance-error {
   border-left-color: var(--text-error);
 }
