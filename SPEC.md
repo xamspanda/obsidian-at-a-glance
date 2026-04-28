@@ -6,7 +6,7 @@ Build an Obsidian plugin + Hermes AI integration that automatically generates a 
 
 1. **Obsidian Plugin** (`obsidian-at-a-glance`) — a local `.obsidian/plugins/` community-style plugin
 2. **Hermes Prompt/Behavior** — instructions for how Hermes should generate the overview
-3. **Daily Note Template** — updated template with the `ai-overview` codeblock placeholder
+3. **Daily Note Template** — updated template with the `glance` codeblock placeholder
 
 ---
 
@@ -17,7 +17,7 @@ Build an Obsidian plugin + Hermes AI integration that automatically generates a 
       |                                        |                        |
       |  Daily note created (template)         |                        |
       |                                          |                        |
-      |  Plugin detects ```ai-overview block    |                        |
+      |  Plugin detects ```glance block    |                        |
       |  in newly rendered note                  |                        |
       |                                          |                        |
       |  ──────────────────────────────────────► |  GET /vault/04 - Daily/|
@@ -83,7 +83,7 @@ obsidian-at-a-glance/
 
 The plugin must:
 
-1. **Register a `ai-overview` codeblock processor** using `registerMarkdownCodeBlockProcessor("ai-overview", ...)`
+1. **Register a `glance` codeblock processor** using `registerMarkdownCodeBlockProcessor("glance", ...)`
 
 2. **On codeblock render:**
    a. Read the last 7 days of daily notes via the Local REST API (`http://127.0.0.1:27124`)
@@ -227,7 +227,7 @@ The daily note template — locate it in the vault (likely in `.obsidian/templat
 ```markdown
 ## At a Glance
 
-```ai-overview
+```glance
 *Generating overview...*
 ```
 
@@ -235,9 +235,9 @@ The daily note template — locate it in the vault (likely in `.obsidian/templat
 
 ### Notes
 
-- The `ai-overview` codeblock processor replaces its own content — the placeholder text is just for UX
+- The `glance` codeblock processor replaces its own content — the placeholder text is just for UX
 - Alternatively, the block can be empty (the processor handles empty blocks gracefully)
-- The section header `## At a Glance` (not `###`) matches the hierarchy: `Daily Note > ## At a Glance > ai-overview block`
+- The section header `## At a Glance` (not `###`) matches the hierarchy: `Daily Note > ## At a Glance > glance block`
 
 ---
 
@@ -265,7 +265,7 @@ The daily note template — locate it in the vault (likely in `.obsidian/templat
 ## Acceptance Criteria
 
 1. The plugin folder can be dropped into `.obsidian/plugins/` and enabled in Obsidian
-2. When a daily note containing ` ```ai-overview ` is opened/rendered, the processor fires
+2. When a daily note containing ` ```glance ` is opened/rendered, the processor fires
 3. The processor reads the last 7 days of notes via the Local REST API
 4. Hermes is spawned with the correct prompt and produces valid markdown
 5. The At a Glance section appears under `## At a Glance` in the current daily note
@@ -286,4 +286,4 @@ obsidian-at-a-glance/
 └── README.md           ← install/enable instructions
 ```
 
-Also update the daily note template in the vault to include the `ai-overview` codeblock placeholder.
+Also update the daily note template in the vault to include the `glance` codeblock placeholder.

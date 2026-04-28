@@ -39,7 +39,7 @@ class AtAGlancePlugin extends Plugin {
       },
     });
 
-    this.registerMarkdownCodeBlockProcessor("ai-overview", async (_source, el, ctx) => {
+    this.registerMarkdownCodeBlockProcessor("glance", async (_source, el, ctx) => {
       await this.processOverviewBlock(el, ctx);
     });
 
@@ -525,14 +525,14 @@ Current time: ${targetDay.time}`;
     const absolutePath = path.join(this.getVaultPath(), notePath);
 
     if (!fs.existsSync(absolutePath)) {
-      await this.log("warn", "Could not update ai-overview codeblock status because note file was not found", { path: notePath });
+      await this.log("warn", "Could not update glance codeblock status because note file was not found", { path: notePath });
       return;
     }
 
     const original = fs.readFileSync(absolutePath, "utf8");
-    const codeblockPattern = new RegExp("(```ai-overview[^\\n]*\\n)([\\s\\S]*?)(\\n?```)", "i");
+    const codeblockPattern = new RegExp("(```glance[^\\n]*\\n)([\\s\\S]*?)(\\n?```)", "i");
     if (!codeblockPattern.test(original)) {
-      await this.log("warn", "Could not update ai-overview codeblock status because no ai-overview block was found", { path: notePath });
+      await this.log("warn", "Could not update glance codeblock status because no glance block was found", { path: notePath });
       return;
     }
 
@@ -542,7 +542,7 @@ Current time: ${targetDay.time}`;
     }
 
     fs.writeFileSync(absolutePath, updated, "utf8");
-    await this.log("info", "Updated ai-overview codeblock status", { path: notePath, generatedAt });
+    await this.log("info", "Updated glance codeblock status", { path: notePath, generatedAt });
   }
 
   async patchDailyNote(notePath, overview) {
@@ -659,7 +659,7 @@ Current time: ${targetDay.time}`;
   }
 
   getLogPath() {
-    return path.join(this.getVaultPath(), ".obsidian", "plugins", "obsidian-at-a-glance", "ai-overview.log");
+    return path.join(this.getVaultPath(), ".obsidian", "plugins", "obsidian-at-a-glance", "glance.log");
   }
 
   async log(level, message, details = {}) {
@@ -773,7 +773,7 @@ class AtAGlanceSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Log full prompt")
-      .setDesc("Debug mode: include the full Hermes prompt in ai-overview.log. This can include private journal content.")
+      .setDesc("Debug mode: include the full Hermes prompt in glance.log. This can include private journal content.")
       .addToggle((toggle) => toggle
         .setValue(Boolean(this.plugin.settings.logFullPrompt))
         .onChange(async (value) => {
